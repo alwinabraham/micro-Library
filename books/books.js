@@ -1,8 +1,8 @@
 const express = require("express")
 const mongoose = require("mongoose")    
 const bodyParser = require("body-parser")
-
 const app = express()
+
 app.use(bodyParser.json());
 
 require("./Book")
@@ -41,6 +41,48 @@ app.post("/book",(req,res)=>{
         }
     })
     res.send("new book created")
+})
+
+app.get("/books",(req,res)=>{
+
+    Book.find().then((books)=>{
+        res.json(books);
+    }).catch((err)=>{
+        if(err){
+            throw err
+        }
+    })
+
+})
+
+app.get("/book/:id",(req,res)=>{
+
+    Book.findById(req.params.id).then((book)=>{
+
+        if(book){
+            res.json(book);
+        }
+
+    }).catch((err)=>{
+        if(err){
+            res.send('404')
+        }
+    })
+
+})
+
+app.delete("/book/:id",(req,res)=>{
+
+    Book.findOneAndRemove(req.params.id).then((book)=>{
+
+        res.send("One book is deleted");        
+
+    }).catch((err)=>{
+        if(err){
+            throw err
+        }
+    })
+
 })
 
 app.listen(4545,()=>{
