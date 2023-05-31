@@ -68,6 +68,22 @@ app.get("/customer/:id",(req,res)=>{
 
 })
 
+
+app.delete("/customer/:id",(req,res)=>{
+
+    Customer.findOneAndRemove(req.params.id).then((customer)=>{
+
+        res.send("One book is deleted");        
+
+    }).catch((err)=>{
+        if(err){
+            throw err
+        }
+    })
+
+})
+
+
 app.get('/',(req,res)=>{
     res.send("This is our main End")
 })
